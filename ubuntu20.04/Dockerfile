@@ -14,7 +14,7 @@ RUN echo "===> "  && \
     \
     echo "===> Installing handy tools (not absolutely required)..."  && \
     apt-get install -y python3-pip              && \
-    pip3 install --upgrade pycrypto pywinrm     && \
+    pip3 install --upgrade pycrypto pywinrm docker    && \
     apt-get install -y sshpass openssh-client  && \
     \
     \
