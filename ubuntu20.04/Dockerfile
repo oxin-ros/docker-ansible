@@ -4,7 +4,7 @@
 FROM ubuntu:20.04
 
 RUN echo "===> "  && \
-    apt-get update  &&  apt-get install -y gnupg2    && \
+    apt-get update  &&  apt-get install -y gnupg2 docker   && \
     DEBIAN_FRONTEND=noninteractive  apt-get update  && \
     \
     \
