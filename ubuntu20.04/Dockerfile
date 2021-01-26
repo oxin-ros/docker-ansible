@@ -4,7 +4,7 @@
 FROM ubuntu:20.04
 
 RUN echo "===> "  && \
-    apt-get update  &&  apt-get install -y gnupg2 docker   && \
+    apt-get update  &&  apt-get install -y gnupg2   && \
     DEBIAN_FRONTEND=noninteractive  apt-get update  && \
     \
     \
@@ -14,8 +14,8 @@ RUN echo "===> "  && \
     \
     echo "===> Installing handy tools (not absolutely required)..."  && \
     apt-get install -y python3-pip              && \
-    pip3 install --upgrade pycrypto pywinrm docker docker-compose   && \
-    apt-get install -y sshpass openssh-client  && \
+    pip3 install --upgrade pycrypto pywinrm     && \
+    apt-get install -y sshpass openssh-client   && \
     \
     \
     echo "===> Removing Ansible PPA..."  && \
