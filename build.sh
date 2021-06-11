@@ -6,3 +6,5 @@ for dir in $(ls -d */); do
     docker build . -t $1/ansible:$tag
     docker push $1/ansible:$tag
 done
+docker tag -t $1/ansible:ubuntu20.04 $1/ansible
+docker push $1/ansible
