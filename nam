@@ -1,0 +1,16 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: 
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-lastest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build docker Image Ubuntu 
+      run: |
+        echo "${{ secrets.DOCKER_HUB_TOKEN}}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin hub.docker.com
+        docker build ./ubuntu20.04/ --tag ${{ secrets.DOCKER_HUB_USERNAME }}/ansible:ubuntu20.04
+        docker push ${{ secrets.DOCKER_HUB_USERNAME }}/ansible:ubuntu20.04
