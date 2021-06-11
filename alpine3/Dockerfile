@@ -7,9 +7,7 @@
 
 
 # pull base image
-FROM alpine:3.8
-
-MAINTAINER William Yeh <william.pjyeh@gmail.com>
+FROM alpine:3
 
 
 RUN echo "===> Installing sudo to emulate normal OS behavior..."  && \
@@ -17,19 +15,20 @@ RUN echo "===> Installing sudo to emulate normal OS behavior..."  && \
     \
     \
     echo "===> Adding Python runtime..."  && \
-    apk --update add python py-pip openssl ca-certificates    && \
+    apk --update add python3 py3-pip openssl ca-certificates   && \
     apk --update add --virtual build-dependencies \
-                python-dev libffi-dev openssl-dev build-base  && \
-    pip install --upgrade pip cffi                            && \
+                python3-dev libffi-dev openssl-dev build-base && \
+    pip3 install --upgrade cffi pip                           && \
     \
     \
     echo "===> Installing Ansible..."  && \
-    pip install ansible                && \
+    export CRYPTOGRAPHY_DONT_BUILD_RUST=1 \
+    pip3 install ansible                && \
     \
     \
     echo "===> Installing handy tools (not absolutely required)..."  && \
-    pip install --upgrade pycrypto pywinrm         && \
-    apk --update add sshpass openssh-client rsync  && \
+    pip3 install --upgrade pycrypto pywinrm  && \
+    apk --update add sshpass openssh-client rsync curl git  && \
     \
     \
     echo "===> Removing package list..."  && \
