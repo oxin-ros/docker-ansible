@@ -12,5 +12,8 @@ cd ubuntu20.04/
 docker build . -t $1/ansible:$tag
 docker push $1/ansible:$tag
 
-docker tag -t $1/ansible:ubuntu20.04 $1/ansible
-docker push $1/ansible
+docker tag -t $1/ansible:ubuntu20.04 $1/ansible:latest
+docker tag -t $1/ansible:ubuntu20.04 $1/ansible:ubuntu20.04-1
+docker push $1/ansible:ubuntu20.04-1
+docker push $1/ansible:latest
+
