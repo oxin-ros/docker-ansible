@@ -27,3 +27,8 @@ jobs:
     # Runs a single command using the runners shell
     - name: make
       run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} && ./build.sh ${{ secrets.DOCKER_USERNAME }}
+  test_ubuntu:
+    runs-on: yannicsva/ansible:ubuntu20.04
+    steps:
+    - name: version
+      run: ansible version
