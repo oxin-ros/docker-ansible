@@ -6,7 +6,7 @@ name: CI
 # events but only for the master branch
 on:
   schedule:
-    - cron: '32 2 * * *'
+    - cron: '32 2 5 * *'
   push:
     branches: [ master ]
   pull_request:
@@ -27,8 +27,3 @@ jobs:
     # Runs a single command using the runners shell
     - name: make
       run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} && ./build.sh ${{ secrets.DOCKER_USERNAME }}
-  test_ubuntu:
-    runs-on: yannicsva/ansible:ubuntu20.04
-    steps:
-    - name: version
-      run: ansible version
