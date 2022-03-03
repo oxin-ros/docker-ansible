@@ -8,8 +8,6 @@ for dir in $(ls -d */); do
     cd ..
 done
 
-docker tag $1/ansible:ubuntu20.04 $1/ansible:latest
-docker tag $1/ansible:ubuntu20.04 $1/ansible:ubuntu20.04-1
-docker push $1/ansible:ubuntu20.04-1
+docker tag $1/ansible:ubuntu20.04-pip $1/ansible:latest
 docker push $1/ansible:latest
 
