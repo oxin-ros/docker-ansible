@@ -5,41 +5,56 @@
 # Version  1.0
 #
 
-
 # pull base image
-FROM alpine:3
+ARG BASE_IMAGE=alpine:3
+FROM ${BASE_IMAGE}
 
-
-RUN echo "===> Installing sudo to emulate normal OS behavior..."  && \
-    apk --update add sudo                                         && \
+ENV CRYPTOGRAPHY_DONT_BUILD_RUST=1
+RUN echo "===> Installing sudo to emulate normal OS behavior..." \
+    && apk --no-cache add sudo \
     \
+    && echo "===> Adding Python runtime..." \
+    && apk --no-cache add \
+        python3 \
+        py3-pip \
+        openssl \
+        ca-certificates \
+    && apk --no-cache add --virtual build-dependencies \
+        python3-dev \
+        libffi-dev \
+        openssl-dev \
+        build-base \
+    && pip3 install --no-cache-dir --upgrade \
+        cffi \
+        pip \
+        wheel \
     \
-    echo "===> Adding Python runtime..."  && \
-    apk --update add python3 py3-pip openssl ca-certificates   && \
-    apk --update add --virtual build-dependencies \
-                python3-dev libffi-dev openssl-dev build-base && \
-    pip3 install --upgrade cffi pip                           && \
+    && echo "===> Installing Ansible..." \
+    && pip3 install --no-cache-dir ansible \
     \
+    && echo "===> Installing system tools..." \
+    && pip3 install --no-cache-dir --upgrade \
+        pycrypto \
+        pywinrm \
+    && apk --no-cache add \
+        sshpass \
+        openssh-client \
+        rsync \
+        curl \
+        git  \
     \
-    echo "===> Installing Ansible..."  && \
-    export CRYPTOGRAPHY_DONT_BUILD_RUST=1 \
-    pip3 install ansible                && \
+    && echo "===> Removing package list..." \
+    && apk del build-dependencies \
+    && rm -rf /var/cache/apk/* \
+    && rm -rf /root/.cache/ \
     \
+    && echo "===> Cearing python cache..." \
+    && find /usr/lib/python3.10/ -type d -name __pycache__ | xargs rm -rf \
     \
-    echo "===> Installing handy tools (not absolutely required)..."  && \
-    pip3 install --upgrade pycrypto pywinrm  && \
-    apk --update add sshpass openssh-client rsync curl git  && \
-    \
-    \
-    echo "===> Removing package list..."  && \
-    apk del build-dependencies            && \
-    rm -rf /var/cache/apk/*               && \
-    \
-    \
-    echo "===> Adding hosts for convenience..."  && \
-    mkdir -p /etc/ansible                        && \
-    echo 'localhost' > /etc/ansible/hosts
-
+    && echo "===> Adding hosts for convenience..." \
+    && mkdir -p /etc/ansible \
+    && echo 'localhost' > /etc/ansible/hosts
 
 # default command: display Ansible version
-CMD [ "ansible-playbook", "--version" ]
+ENTRYPOINT [ "ansible-playbook" ]
+CMD [ "--version" ]
